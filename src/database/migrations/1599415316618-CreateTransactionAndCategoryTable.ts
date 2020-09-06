@@ -17,6 +17,7 @@ export default class CreateTransactionAndCategoryTable1599415316618
             type: 'uuid',
             isPrimary: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'title',
@@ -45,9 +46,15 @@ export default class CreateTransactionAndCategoryTable1599415316618
             type: 'uuid',
             isPrimary: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'title',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'type',
             type: 'varchar',
             isNullable: false,
           },
@@ -89,7 +96,7 @@ export default class CreateTransactionAndCategoryTable1599415316618
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('transactions', 'category_id');
+    await queryRunner.dropForeignKey('transactions', 'TransactionCategory');
 
     await queryRunner.dropTable('transactions');
     await queryRunner.dropTable('categories');
