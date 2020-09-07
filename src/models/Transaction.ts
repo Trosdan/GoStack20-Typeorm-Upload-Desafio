@@ -18,10 +18,10 @@ class Transaction {
   @Column()
   title: string;
 
-  @Column('varchar')
+  @Column()
   type: 'income' | 'outcome';
 
-  @Column()
+  @Column('decimal')
   value: number;
 
   @Column()

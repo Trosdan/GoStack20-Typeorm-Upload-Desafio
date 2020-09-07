@@ -4,6 +4,7 @@ import { getCustomRepository, getRepository } from 'typeorm';
 import Transaction from '../models/Transaction';
 import TransactionRepository from '../repositories/TransactionsRepository';
 import Category from '../models/Category';
+import AppError from '../errors/AppError';
 
 interface Request {
   title: string;
@@ -21,6 +22,15 @@ class CreateTransactionService {
   }: Request): Promise<Transaction> {
     const transactionRepository = getCustomRepository(TransactionRepository);
     const categoryRepository = getRepository(Category);
+
+    const { total } = await transactionRepository.getBalance();
+
+    if (type === 'outcome' && value > total) {
+      throw new AppError(
+        'Não é possivel fazer retirada maior que o valor na contar',
+        400,
+      );
+    }
 
     let categoryObj = await categoryRepository.findOne({
       where: { title: category },
